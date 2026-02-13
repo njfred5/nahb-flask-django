@@ -1,0 +1,11 @@
+<h1>THE END</h1>
+
+<p>{{ page.text }}</p>
+
+{% if page.ending_label %}
+    <p><strong>Ending: {{ page.ending_label }}</strong></p>
+{% endif %}
+
+<a href="{% url 'stories:story_detail' page.story_id %}">Back to story</a>
+<br>
+<a href="{% url 'stories:play_story' page.story_id %}">Play again</a>

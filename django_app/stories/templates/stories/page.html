@@ -1,0 +1,25 @@
+<h2>{{ page.text }}</h2>
+
+<ul>
+{% for c in page.choices %}
+    {% if c.next_page_id %}
+        <li>
+            <a href="{% url 'stories:page_view' c.next_page_id %}">
+                {{ c.text }}
+            </a>
+        </li>
+    {% else %}
+        <li>{{ c.text }} (no next page)</li>
+    {% endif %}
+{% endfor %}
+</ul>
+
+<!-- Autosave indicator -->
+{% if request.session.session_id %}
+    <p style="color: green; font-style: italic;">Progress saved automatically</p>
+{% endif %}
+
+<!-- Start over button -->
+<form action="{% url 'stories:play_story' page.story_id %}" method="get">
+    <button type="submit">Start Over</button>
+</form>

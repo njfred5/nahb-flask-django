@@ -1,0 +1,30 @@
+{% load dict_extras %}
+
+<h1>Statistics</h1>
+
+<h2>Plays per story</h2>
+<ul>
+  {% for item in plays_per_story %}
+    <li>
+      Story {{ item.story_id }} - Ending page {{ item.ending_page_id }}:
+      {{ item.count }} times ({{ item.percentage }}%)
+    </li>
+  {% endfor %}
+</ul>
+
+<h2>Ending distribution</h2>
+<ul>
+  {% for item in endings_per_story %}
+    <li>
+      Story {{ item.story_id }} - Ending page {{ item.ending_page_id }}:
+      {{ item.count }} times
+      {% with story_percent=percentages|get_item:item.story_id %}
+        {% with ending_percent=story_percent|get_item:item.ending_page_id %}
+          {% if ending_percent %}
+            ({{ ending_percent }}%)
+          {% endif %}
+        {% endwith %}
+      {% endwith %}
+    </li>
+  {% endfor %}
+</ul>
