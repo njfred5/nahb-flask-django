@@ -1,11 +1,22 @@
-﻿asgiref==3.11.1
-certifi==2026.1.4
-charset-normalizer==3.4.4
+# Django
 Django==6.0.2
-idna==3.11
-requests==2.32.5
+asgiref==3.11.1
 sqlparse==0.5.5
 tzdata==2025.3
-urllib3==2.6.3
-gunicorn
 
+# Flask
+Flask==3.1.2
+Flask-SQLAlchemy==3.1.1
+SQLAlchemy==2.0.46
+greenlet==3.3.1
+
+# Requests (Django → Flask communication)
+requests==2.32.5
+urllib3==2.6.3
+charset-normalizer==3.4.4
+idna==3.11
+certifi==2026.1.4
+
+# Deployment
+gunicorn
+whitenoise
