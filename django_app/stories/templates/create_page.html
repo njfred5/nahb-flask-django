@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Add Page to "{{ story.title }}"</h2>
+
+<form method="POST">
+    {% csrf_token %}
+
+    <label>Page Text</label><br>
+    <textarea name="text" rows="5" required></textarea><br><br>
+
+    <label>
+        <input type="checkbox" name="is_ending">
+        This page is an ending
+    </label><br><br>
+
+    <label>Ending Label (optional)</label><br>
+    <input type="text" name="ending_label"><br><br>
+
+    <button type="submit">Create Page</button>
+</form>
+
+{% endblock %}

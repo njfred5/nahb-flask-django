@@ -1,3 +1,6 @@
+{% extends "base.html" %}
+
+{% block content %}
 <h2>{{ page.text }}</h2>
 
 <ul>
@@ -14,12 +17,12 @@
 {% endfor %}
 </ul>
 
-<!-- Autosave indicator -->
 {% if request.session.session_id %}
-    <p style="color: green; font-style: italic;">Progress saved automatically</p>
+  <p style="color:green;font-style:italic;">Progress saved automatically</p>
 {% endif %}
 
-<!-- Start over button -->
 <form action="{% url 'stories:play_story' page.story_id %}" method="get">
-    <button type="submit">Start Over</button>
+  <button type="submit">Start Over</button>
 </form>
+
+{% endblock %}

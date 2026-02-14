@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Add Choice</h2>
+
+<form method="post">
+    {% csrf_token %}
+    <label>Choice Text:</label><br>
+    <input type="text" name="text"><br><br>
+
+    <label>Next Page:</label><br>
+    <select name="next_page_id">
+        {% for p in pages %}
+            <option value="{{ p.id }}">Page {{ p.id }}</option>
+        {% endfor %}
+    </select><br><br>
+
+    <button type="submit">Create Choice</button>
+</form>
+
+{% endblock %}

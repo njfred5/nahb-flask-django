@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+  <head>
+    <title>NAHB</title>
+    <style>
+      nav {
+        background: #f0f0f0;
+        padding: 10px;
+        margin-bottom: 20px;
+      }
+      nav a {
+        margin-right: 15px;
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+  <a href="{% url 'stories:story_list' %}">Stories</a>
+
+  {% if user.is_authenticated %}
+  {% if user.is_staff %} <a href="/admin/">Admin Panel</a> {% endif %}
+    {% if user.groups.all|length > 0 and user.groups.all.0.name == "Author" %}
+      <a href="{% url 'stories:my_stories' %}">My Stories</a>
+    {% endif %}
+
+    <span>Hi, {{ user.username }}</span>
+
+    {% if user.groups.all|length > 0 and user.groups.all.0.name == "Author" %}
+      <span>(Author)</span>
+    {% endif %}
+
+    {% if user.is_staff %}
+      <a href="{% url 'stories:stats' %}">Story Stats</a>
+    {% endif %}
+
+    <form action="{% url 'logout' %}" method="post" style="display:inline;">
+      {% csrf_token %}
+      <button type="submit" style="background:none;border:none;color:blue;cursor:pointer;">
+        Logout
+      </button>
+    </form>
+
+  {% else %}
+    <a href="{% url 'login' %}">Login</a>
+    <a href="{% url 'stories:signup' %}">Sign up</a>
+  {% endif %}
+</nav>
+
+
+    <div class="content">{% block content %} {% endblock %}</div>
+  </body>
+</html>

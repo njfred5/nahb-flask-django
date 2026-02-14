@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Edit Page {{ page.id }}</h1>
+
+<form method="post">
+    {% csrf_token %}
+    <label>Text:</label><br>
+    <textarea name="text" rows="6" cols="60">{{ page.text }}</textarea><br><br>
+
+    <label>
+        <input type="checkbox" name="is_ending" {% if page.is_ending %}checked{% endif %}>
+        Is Ending
+    </label><br><br>
+
+    <label>Ending Label (optional):</label><br>
+    <input type="text" name="ending_label" value="{{ page.ending_label }}"><br><br>
+
+    <button type="submit">Save Changes</button>
+</form>
+
+<hr>
+
+<h3>Choices</h3>
+<ul>
+  {% if page.choices %}
+    {% for c in page.choices %}
+      <li>{{ c.text }} → Page {{ c.next_page_id }}</li>
+    {% endfor %}
+  {% else %}
+    <li>No choices yet.</li>
+  {% endif %}
+</ul>
+
+<a href="{% url 'stories:create_choice' page.id %}">Add Choice</a>
+
+{% endblock %}

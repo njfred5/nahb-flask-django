@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Page {{ page.id }}</h1>
+
+<p>{{ page.text }}</p>
+
+<h3>Choices</h3>
+<ul>
+    {% if page.choices %}
+        {% for c in page.choices %}
+            <li>
+                {{ c.text }} → goes to page {{ c.next_page_id }}
+            </li>
+        {% endfor %}
+    {% else %}
+        <li>No choices yet.</li>
+    {% endif %}
+</ul>
+{% if user.is_authenticated and user.groups.all.0.name == "Author" %}
+    <a href="{% url 'stories:edit_page' page.id %}">Edit Page</a>
+{% endif %}
+
+
+<hr>
+
+<a href="{% url 'stories:create_choice' page.id %}">Add Choice</a>
+
+{% endblock %}

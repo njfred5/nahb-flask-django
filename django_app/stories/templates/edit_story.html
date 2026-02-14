@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Edit Story</h2>
+
+<form method="POST">
+    {% csrf_token %}
+
+    <label>Title</label><br>
+    <input type="text" name="title" value="{{ story.title }}" required><br><br>
+
+    <label>Description</label><br>
+    <textarea name="description" rows="4">{{ story.description }}</textarea><br><br>
+
+    <label>Status</label><br>
+    <select name="status">
+        <option value="draft" {% if story.status == "draft" %}selected{% endif %}>Draft</option>
+        <option value="published" {% if story.status == "published" %}selected{% endif %}>Published</option>
+    </select><br><br>
+
+    <button type="submit">Save Changes</button>
+</form>
+
+{% endblock %}

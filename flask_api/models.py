@@ -7,12 +7,15 @@ class Story(db.Model):
     status = db.Column(db.String(20), default="draft")
     start_page_id = db.Column(db.Integer, db.ForeignKey("page.id"))
 
+    owner_id = db.Column(db.Integer, nullable=False)  # ⭐ NEW FIELD
+
     pages = db.relationship(
         "Page",
         backref="story",
         cascade="all, delete",
         foreign_keys="Page.story_id"
     )
+
 
 
 class Page(db.Model):

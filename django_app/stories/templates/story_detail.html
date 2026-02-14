@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>{{ story.title }}</h1>
+
+<p>{{ story.description }}</p>
+
+{# ---------------------- READER VIEW ---------------------- #}
+{% if not user.is_authenticated or user.groups.all.0.name != "Author" or story.owner_id != user.id %}
+
+    {% if resume_page_id %}
+        <p><a href="{% url 'stories:page_view' resume_page_id %}">Resume Story</a></p>
+    {% else %}
+        <p><a href="{% url 'stories:play_story' story.id %}">Play Story</a></p>
+    {% endif %}
+
+{% endif %}
+
+{# ---------------------- AUTHOR VIEW ---------------------- #}
+{% if user.is_authenticated and user.groups.all|length > 0 and user.groups.all.0.name == "Author" and story.owner_id == user.id %}
+
+<div class="author-tools" style="margin-bottom: 20px">
+  <a href="{% url 'stories:edit_story' story.id %}">Edit Story</a> |
+  <a href="{% url 'stories:delete_story' story.id %}">Delete Story</a> |
+  <a href="{% url 'stories:create_page' story.id %}">Add Page</a>
+</div>
+
+<h2>Pages</h2>
+<ul>
+    {% for p in story.pages %}
+        <li>
+            Page {{ p.id }} –
+            <a href="{% url 'stories:page_view' p.id %}">Play</a> |
+            <a href="{% url 'stories:edit_page' p.id %}">Edit Page</a> |
+            <a href="{% url 'stories:delete_page' p.id %}">Delete Page</a>
+            <a href="{% url 'stories:create_choice' p.id %}">Add Choice</a>
+        </li>
+    {% endfor %}
+</ul>
+
+{% if story.pages %}
+    <a href="{% url 'stories:play_story' story.id %}?preview=1">Preview Story</a>
+{% else %}
+    <p style="color:red;">Add at least one page before previewing.</p>
+{% endif %}
+
+{% endif %}
+
+{% endblock %}

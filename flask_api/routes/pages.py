@@ -50,3 +50,4 @@ def delete_page(page_id):
     db.session.delete(page)
     db.session.commit()
     return {"message": "Page deleted"}
+

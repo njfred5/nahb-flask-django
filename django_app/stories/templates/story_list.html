@@ -1,6 +1,8 @@
+{% extends "base.html" %}
+
+{% block content %}
 <h1>Stories</h1>
 
-<!-- Search bar -->
 <form method="get" style="margin-bottom: 20px;">
     <input type="text" name="q" placeholder="Search stories..." value="{{ request.GET.q }}">
     <button type="submit">Search</button>
@@ -22,3 +24,4 @@
     <li>No stories found.</li>
 {% endfor %}
 </ul>
+{% endblock %}
