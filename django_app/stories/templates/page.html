@@ -1,28 +1,41 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2>{{ page.text }}</h2>
+<div class="page-container">
 
-<ul>
-{% for c in page.choices %}
-    {% if c.next_page_id %}
-        <li>
-            <a href="{% url 'stories:page_view' c.next_page_id %}">
-                {{ c.text }}
-            </a>
-        </li>
-    {% else %}
-        <li>{{ c.text }} (no next page)</li>
+    <div class="page-text">
+        <p>{{ page.text }}</p>
+    </div>
+
+    <div class="choices-section">
+        <h3 class="choices-title">Choose an option</h3>
+
+        <ul class="choice-list">
+            {% for c in page.choices %}
+                {% if c.next_page_id %}
+                    <li class="choice-item">
+                        <a class="choice-button" href="{% url 'stories:page_view' c.next_page_id %}">
+                            {{ c.text }}
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="choice-item disabled-choice">
+                        {{ c.text }} (no next page)
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+
+    {% if request.session.session_id %}
+        <p class="autosave-text">Progress saved automatically</p>
     {% endif %}
-{% endfor %}
-</ul>
 
-{% if request.session.session_id %}
-  <p style="color:green;font-style:italic;">Progress saved automatically</p>
-{% endif %}
+    <div class="restart-section">
+        <form action="{% url 'stories:play_story' page.story_id %}" method="get">
+            <button type="submit" class="btn-secondary">Start Over</button>
+        </form>
+    </div>
 
-<form action="{% url 'stories:play_story' page.story_id %}" method="get">
-  <button type="submit">Start Over</button>
-</form>
-
+</div>
 {% endblock %}

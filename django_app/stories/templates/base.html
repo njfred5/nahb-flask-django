@@ -2,51 +2,50 @@
 <html>
   <head>
     <title>NAHB</title>
-    <style>
-      nav {
-        background: #f0f0f0;
-        padding: 10px;
-        margin-bottom: 20px;
-      }
-      nav a {
-        margin-right: 15px;
-      }
-    </style>
+    <link rel="stylesheet" href="/static/style.css">
   </head>
+
   <body>
-    <nav>
-  <a href="{% url 'stories:story_list' %}">Stories</a>
+    <nav class="navbar">
+      <div class="nav-left">
+        <a class="nav-logo" href="{% url 'stories:story_list' %}">NAHB</a>
 
-  {% if user.is_authenticated %}
-  {% if user.is_staff %} <a href="/admin/">Admin Panel</a> {% endif %}
-    {% if user.groups.all|length > 0 and user.groups.all.0.name == "Author" %}
-      <a href="{% url 'stories:my_stories' %}">My Stories</a>
-    {% endif %}
+        <a class="nav-link" href="{% url 'stories:story_list' %}">Stories</a>
 
-    <span>Hi, {{ user.username }}</span>
+        {% if user.is_authenticated %}
+          {% if user.groups.all|length > 0 and user.groups.all.0.name == "Author" %}
+            <a class="nav-link" href="{% url 'stories:my_stories' %}">My Stories</a>
+          {% endif %}
 
-    {% if user.groups.all|length > 0 and user.groups.all.0.name == "Author" %}
-      <span>(Author)</span>
-    {% endif %}
+          {% if user.is_staff %}
+            <a class="nav-link" href="/admin/">Admin Panel</a>
+            <a class="nav-link" href="{% url 'stories:stats' %}">Story Stats</a>
+          {% endif %}
+        {% endif %}
+      </div>
 
-    {% if user.is_staff %}
-      <a href="{% url 'stories:stats' %}">Story Stats</a>
-    {% endif %}
+      <div class="nav-right">
+        {% if user.is_authenticated %}
+          <span class="nav-user">Hi, {{ user.username }}</span>
 
-    <form action="{% url 'logout' %}" method="post" style="display:inline;">
-      {% csrf_token %}
-      <button type="submit" style="background:none;border:none;color:blue;cursor:pointer;">
-        Logout
-      </button>
-    </form>
+          {% if user.groups.all|length > 0 and user.groups.all.0.name == "Author" %}
+            <span class="nav-role">(Author)</span>
+          {% endif %}
 
-  {% else %}
-    <a href="{% url 'login' %}">Login</a>
-    <a href="{% url 'stories:signup' %}">Sign up</a>
-  {% endif %}
-</nav>
+          <form action="{% url 'logout' %}" method="post" class="logout-form">
+            {% csrf_token %}
+            <button type="submit" class="btn-logout">Logout</button>
+          </form>
 
+        {% else %}
+          <a class="btn-primary" href="{% url 'login' %}">Login</a>
+          <a class="btn-secondary" href="{% url 'stories:signup' %}">Sign Up</a>
+        {% endif %}
+      </div>
+    </nav>
 
-    <div class="content">{% block content %} {% endblock %}</div>
+    <main class="container">
+      {% block content %}{% endblock %}
+    </main>
   </body>
 </html>

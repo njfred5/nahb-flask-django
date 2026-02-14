@@ -1,37 +1,44 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Edit Page {{ page.id }}</h1>
+<h1 class="page-title">Edit Page {{ page.id }}</h1>
 
-<form method="post">
-    {% csrf_token %}
-    <label>Text:</label><br>
-    <textarea name="text" rows="6" cols="60">{{ page.text }}</textarea><br><br>
+<div class="form-card">
+    <form method="post">
+        {% csrf_token %}
 
-    <label>
-        <input type="checkbox" name="is_ending" {% if page.is_ending %}checked{% endif %}>
-        Is Ending
-    </label><br><br>
+        <label class="form-label">Page Text</label>
+        <textarea name="text" rows="6" class="form-input">{{ page.text }}</textarea>
 
-    <label>Ending Label (optional):</label><br>
-    <input type="text" name="ending_label" value="{{ page.ending_label }}"><br><br>
+        <label class="checkbox-label">
+            <input type="checkbox" name="is_ending" {% if page.is_ending %}checked{% endif %}>
+            This page is an ending
+        </label>
 
-    <button type="submit">Save Changes</button>
-</form>
+        <label class="form-label">Ending Label (optional)</label>
+        <input type="text" name="ending_label" class="form-input" value="{{ page.ending_label }}">
 
-<hr>
+        <button type="submit" class="btn-primary">Save Changes</button>
+    </form>
+</div>
 
-<h3>Choices</h3>
-<ul>
-  {% if page.choices %}
-    {% for c in page.choices %}
-      <li>{{ c.text }} → Page {{ c.next_page_id }}</li>
-    {% endfor %}
-  {% else %}
-    <li>No choices yet.</li>
-  {% endif %}
+<hr class="divider">
+
+<h2 class="section-title">Choices</h2>
+
+<ul class="choice-list-editor">
+    {% if page.choices %}
+        {% for c in page.choices %}
+            <li class="choice-editor-item">
+                <span class="choice-text">{{ c.text }}</span>
+                <span class="choice-arrow">→ Page {{ c.next_page_id }}</span>
+            </li>
+        {% endfor %}
+    {% else %}
+        <li class="choice-editor-item empty">No choices yet.</li>
+    {% endif %}
 </ul>
 
-<a href="{% url 'stories:create_choice' page.id %}">Add Choice</a>
+<a class="btn-secondary" href="{% url 'stories:create_choice' page.id %}">Add Choice</a>
 
 {% endblock %}

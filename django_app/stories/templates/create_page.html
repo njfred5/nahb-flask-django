@@ -1,23 +1,24 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2>Add Page to "{{ story.title }}"</h2>
+<h1 class="page-title">Add Page to "{{ story.title }}"</h1>
 
-<form method="POST">
-    {% csrf_token %}
+<div class="form-card">
+    <form method="POST">
+        {% csrf_token %}
 
-    <label>Page Text</label><br>
-    <textarea name="text" rows="5" required></textarea><br><br>
+        <label class="form-label">Page Text</label>
+        <textarea name="text" rows="5" class="form-input" required></textarea>
 
-    <label>
-        <input type="checkbox" name="is_ending">
-        This page is an ending
-    </label><br><br>
+        <label class="checkbox-label">
+            <input type="checkbox" name="is_ending">
+            This page is an ending
+        </label>
 
-    <label>Ending Label (optional)</label><br>
-    <input type="text" name="ending_label"><br><br>
+        <label class="form-label">Ending Label (optional)</label>
+        <input type="text" name="ending_label" class="form-input">
 
-    <button type="submit">Create Page</button>
-</form>
-
+        <button type="submit" class="btn-primary">Create Page</button>
+    </form>
+</div>
 {% endblock %}

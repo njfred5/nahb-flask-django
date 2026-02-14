@@ -1,14 +1,24 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>THE END</h1>
+<div class="ending-container">
 
-<p>{{ page.text }}</p>
+    <h1 class="ending-title">THE END</h1>
 
-{% if page.ending_label %}
-    <p><strong>Ending: {{ page.ending_label }}</strong></p>
-{% endif %}
+    <div class="ending-card">
+        <p class="ending-text">{{ page.text }}</p>
 
-<a href="{% url 'stories:story_detail' page.story_id %}">Back to story</a><br>
-<a href="{% url 'stories:play_story' page.story_id %}">Play again</a>
+        {% if page.ending_label %}
+            <p class="ending-label">
+                <strong>Ending:</strong> {{ page.ending_label }}
+            </p>
+        {% endif %}
+    </div>
+
+    <div class="ending-actions">
+        <a class="btn-primary" href="{% url 'stories:play_story' page.story_id %}">Play Again</a>
+        <a class="btn-secondary" href="{% url 'stories:story_detail' page.story_id %}">Back to Story</a>
+    </div>
+
+</div>
 {% endblock %}

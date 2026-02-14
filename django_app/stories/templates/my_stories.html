@@ -1,17 +1,33 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>My Stories</h1>
+<h1 class="page-title">My Stories</h1>
 
-<a href="{% url 'stories:create_story' %}">Create New Story</a>
+<div class="top-actions">
+    <a class="btn-primary" href="{% url 'stories:create_story' %}">Create New Story</a>
+</div>
 
-<ul>
-  {% for s in stories %}
-    <li>
-      <strong>{{ s.title }}</strong> ({{ s.status }})
-      – <a href="{% url 'stories:story_detail' s.id %}">Open</a>
-    </li>
-  {% endfor %}
-</ul>
+<div class="story-grid">
+    {% for s in stories %}
+        <div class="story-card">
+            <h3 class="story-title">
+                <a href="{% url 'stories:story_detail' s.id %}">{{ s.title }}</a>
+            </h3>
+
+            <p class="story-status">
+                Status:
+                {% if s.status == "draft" %}
+                    <span class="badge badge-draft">Draft</span>
+                {% else %}
+                    <span class="badge badge-published">Published</span>
+                {% endif %}
+            </p>
+
+            <a class="btn-secondary small-btn" href="{% url 'stories:story_detail' s.id %}">
+                Open Story
+            </a>
+        </div>
+    {% endfor %}
+</div>
 
 {% endblock %}

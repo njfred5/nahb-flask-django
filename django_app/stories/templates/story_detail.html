@@ -1,49 +1,57 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>{{ story.title }}</h1>
-
-<p>{{ story.description }}</p>
+<div class="story-header">
+    <h1 class="story-title">{{ story.title }}</h1>
+    <p class="story-description">{{ story.description }}</p>
+</div>
 
 {# ---------------------- READER VIEW ---------------------- #}
 {% if not user.is_authenticated or user.groups.all.0.name != "Author" or story.owner_id != user.id %}
-
-    {% if resume_page_id %}
-        <p><a href="{% url 'stories:page_view' resume_page_id %}">Resume Story</a></p>
-    {% else %}
-        <p><a href="{% url 'stories:play_story' story.id %}">Play Story</a></p>
-    {% endif %}
-
+    <div class="reader-actions">
+        {% if resume_page_id %}
+            <a class="btn-primary" href="{% url 'stories:page_view' resume_page_id %}">Resume Story</a>
+        {% else %}
+            <a class="btn-primary" href="{% url 'stories:play_story' story.id %}">Play Story</a>
+        {% endif %}
+    </div>
 {% endif %}
 
 {# ---------------------- AUTHOR VIEW ---------------------- #}
 {% if user.is_authenticated and user.groups.all|length > 0 and user.groups.all.0.name == "Author" and story.owner_id == user.id %}
+    <div class="author-panel">
+        <h2 class="section-title">Author Tools</h2>
 
-<div class="author-tools" style="margin-bottom: 20px">
-  <a href="{% url 'stories:edit_story' story.id %}">Edit Story</a> |
-  <a href="{% url 'stories:delete_story' story.id %}">Delete Story</a> |
-  <a href="{% url 'stories:create_page' story.id %}">Add Page</a>
-</div>
+        <div class="author-buttons">
+            <a class="btn-secondary" href="{% url 'stories:edit_story' story.id %}">Edit Story</a>
+            <a class="btn-secondary" href="{% url 'stories:delete_story' story.id %}">Delete Story</a>
+            <a class="btn-primary" href="{% url 'stories:create_page' story.id %}">Add Page</a>
+        </div>
 
-<h2>Pages</h2>
-<ul>
-    {% for p in story.pages %}
-        <li>
-            Page {{ p.id }} –
-            <a href="{% url 'stories:page_view' p.id %}">Play</a> |
-            <a href="{% url 'stories:edit_page' p.id %}">Edit Page</a> |
-            <a href="{% url 'stories:delete_page' p.id %}">Delete Page</a>
-            <a href="{% url 'stories:create_choice' p.id %}">Add Choice</a>
-        </li>
-    {% endfor %}
-</ul>
+        <h2 class="section-title">Pages</h2>
 
-{% if story.pages %}
-    <a href="{% url 'stories:play_story' story.id %}?preview=1">Preview Story</a>
-{% else %}
-    <p style="color:red;">Add at least one page before previewing.</p>
+        <ul class="page-list">
+            {% for p in story.pages %}
+                <li class="page-item">
+                    <div class="page-info">
+                        <strong>Page {{ p.id }}</strong>
+                    </div>
+
+                    <div class="page-actions">
+                        <a class="btn-small" href="{% url 'stories:page_view' p.id %}">Play</a>
+                        <a class="btn-small" href="{% url 'stories:edit_page' p.id %}">Edit</a>
+                        <a class="btn-small btn-danger" href="{% url 'stories:delete_page' p.id %}">Delete</a>
+                        <a class="btn-small" href="{% url 'stories:create_choice' p.id %}">Add Choice</a>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+
+        {% if story.pages %}
+            <a class="btn-primary" href="{% url 'stories:play_story' story.id %}?preview=1">Preview Story</a>
+        {% else %}
+            <p class="warning-text">Add at least one page before previewing.</p>
+        {% endif %}
+    </div>
 {% endif %}
-
-{% endif %}
-
 {% endblock %}
