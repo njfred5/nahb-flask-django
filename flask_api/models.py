@@ -6,8 +6,7 @@ class Story(db.Model):
     description = db.Column(db.Text, nullable=True)
     status = db.Column(db.String(20), default="draft")
     start_page_id = db.Column(db.Integer, db.ForeignKey("page.id"))
-
-    owner_id = db.Column(db.Integer, nullable=False)  # ⭐ NEW FIELD
+    owner_id = db.Column(db.Integer, nullable=False)  
 
     pages = db.relationship(
         "Page",

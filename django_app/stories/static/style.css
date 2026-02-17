@@ -1,69 +1,123 @@
-django_app/stories/static/style.css
-/* ------------------------------
+/* -----------------------------------------
    GLOBAL THEME
------------------------------- */
+----------------------------------------- */
 
 :root {
   --yellow: #F7C948;
   --yellow-light: #FFD76B;
+  --yellow-dark: #D9A73A;
+
   --black: #1A1A1A;
   --gray: #F4F4F4;
+  --gray-dark: #DADADA;
+
   --white: #FFFFFF;
-  --text-dark: #333333;
+  --text-dark: #2A2A2A;
   --border: #E0E0E0;
+
+  --radius: 12px;
+  --shadow: 0 6px 18px rgba(0,0,0,0.12);
+  --shadow-strong: 0 10px 30px rgba(0,0,0,0.18);
+  --transition: 0.25s ease;
 }
 
-/* Reset */
+/* -----------------------------------------
+   GLOBAL ANIMATIONS
+----------------------------------------- */
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeScale {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes ripple {
+  0% { transform: scale(0); opacity: 0.6; }
+  100% { transform: scale(3); opacity: 0; }
+}
+
+@keyframes glowPulse {
+  0% { box-shadow: 0 0 0px rgba(247,201,72,0.0); }
+  50% { box-shadow: 0 0 12px rgba(247,201,72,0.4); }
+  100% { box-shadow: 0 0 0px rgba(247,201,72,0.0); }
+}
+
 body {
   margin: 0;
   font-family: "Segoe UI", Arial, sans-serif;
   background: var(--gray);
   color: var(--text-dark);
+  line-height: 1.6;
+  animation: fadeIn 0.6s ease;
 }
 
-/* ------------------------------
+/* -----------------------------------------
    NAVBAR
------------------------------- */
+----------------------------------------- */
 
 .navbar {
-  background: var(--black);
+  background: linear-gradient(90deg, var(--black), #000000);
   color: var(--white);
-  padding: 12px 20px;
+  padding: 16px 28px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  box-shadow: var(--shadow);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  animation: fadeScale 0.4s ease;
 }
 
 .nav-left, .nav-right {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 20px;
 }
 
 .nav-logo {
-  font-size: 22px;
-  font-weight: bold;
+  font-size: 26px;
+  font-weight: 700;
   color: var(--yellow);
   text-decoration: none;
+  letter-spacing: 0.5px;
+  transition: var(--transition);
+}
+
+.nav-logo:hover {
+  transform: scale(1.05);
 }
 
 .nav-link {
   color: var(--white);
   text-decoration: none;
   font-size: 15px;
+  position: relative;
+  padding-bottom: 3px;
+  transition: var(--transition);
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  background: var(--yellow);
+  left: 0;
+  bottom: 0;
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+  width: 100%;
 }
 
 .nav-link:hover {
   color: var(--yellow-light);
-}
-
-.nav-user {
-  color: var(--yellow-light);
-  font-weight: bold;
-}
-
-.nav-role {
-  color: var(--yellow);
 }
 
 /* Logout button */
@@ -71,515 +125,161 @@ body {
   background: transparent;
   border: 1px solid var(--yellow);
   color: var(--yellow);
-  padding: 6px 12px;
+  padding: 6px 14px;
   border-radius: 6px;
   cursor: pointer;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
 }
 
 .btn-logout:hover {
   background: var(--yellow);
   color: var(--black);
+  transform: translateY(-1px);
 }
 
-/* ------------------------------
-   BUTTONS
------------------------------- */
+/* -----------------------------------------
+   BUTTONS WITH RIPPLE EFFECT
+----------------------------------------- */
+
+button, .btn-primary, .btn-secondary, .choice-button {
+  position: relative;
+  overflow: hidden;
+}
+
+button::after,
+.btn-primary::after,
+.btn-secondary::after,
+.choice-button::after {
+  content: "";
+  position: absolute;
+  background: rgba(255,255,255,0.5);
+  border-radius: 50%;
+  width: 10px;
+  height: 10px;
+  transform: scale(0);
+  opacity: 0;
+  pointer-events: none;
+}
+
+button:active::after,
+.btn-primary:active::after,
+.btn-secondary:active::after,
+.choice-button:active::after {
+  animation: ripple 0.6s linear;
+  opacity: 1;
+}
+
+/* -----------------------------------------
+   BUTTON STYLES
+----------------------------------------- */
 
 .btn-primary {
-  background: var(--yellow);
+  background: linear-gradient(90deg, var(--yellow), var(--yellow-light));
   color: var(--black);
-  padding: 8px 14px;
-  border-radius: 6px;
+  padding: 12px 18px;
+  border-radius: 8px;
   text-decoration: none;
   font-weight: bold;
+  display: inline-block;
+  transition: var(--transition);
 }
 
 .btn-primary:hover {
-  background: var(--yellow-light);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-strong);
 }
 
 .btn-secondary {
   background: var(--white);
   color: var(--black);
-  padding: 8px 14px;
-  border-radius: 6px;
+  padding: 12px 18px;
+  border-radius: 8px;
   text-decoration: none;
   border: 1px solid var(--yellow);
+  transition: var(--transition);
 }
 
 .btn-secondary:hover {
   background: var(--yellow-light);
+  transform: translateY(-3px);
 }
 
-/* ------------------------------
-   PAGE LAYOUT
------------------------------- */
+/* -----------------------------------------
+   CONTAINER
+----------------------------------------- */
 
 .container {
-  max-width: 900px;
-  margin: 30px auto;
+  max-width: 1000px;
+  margin: 40px auto;
   background: var(--white);
-  padding: 25px;
-  border-radius: 10px;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+  padding: 35px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  animation: fadeIn 0.5s ease;
 }
 
-/* ------------------------------
-   FORMS
------------------------------- */
-
-input, textarea, select {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  margin-top: 5px;
-}
-
-button {
-  background: var(--yellow);
-  border: none;
-  padding: 10px 16px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-button:hover {
-  background: var(--yellow-light);
-}
-
-/* ------------------------------
-   LISTS
------------------------------- */
-
-ul {
-  list-style: none;
-  padding: 0;
-}
-
-li {
-  background: var(--gray);
-  padding: 12px;
-  margin-bottom: 10px;
-  border-radius: 6px;
-  border: 1px solid var(--border);
-}
-
-li a {
-  color: var(--black);
-  font-weight: bold;
-  text-decoration: none;
-}
-
-li a:hover {
-  color: var(--yellow);
-}
-/* ------------------------------
-   STORY LIST PAGE
------------------------------- */
-
-.page-title {
-  font-size: 28px;
-  margin-bottom: 20px;
-  color: var(--black);
-}
-
-.search-bar {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 25px;
-}
-
-.story-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 20px;
-}
+/* -----------------------------------------
+   STORY CARDS
+----------------------------------------- */
 
 .story-card {
   background: var(--white);
-  padding: 18px;
-  border-radius: 10px;
+  padding: 22px;
+  border-radius: var(--radius);
   border: 1px solid var(--border);
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  box-shadow: var(--shadow);
+  transition: 0.3s ease;
+  transform: translateY(0);
 }
 
-.story-title a {
-  text-decoration: none;
-  color: var(--black);
-  font-size: 20px;
-  font-weight: bold;
+.story-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-strong);
+  animation: glowPulse 1.5s infinite;
 }
 
-.story-title a:hover {
-  color: var(--yellow);
-}
-
-.badge {
-  display: inline-block;
-  padding: 4px 8px;
-  border-radius: 6px;
-  font-size: 12px;
-  margin-top: 10px;
-}
-
-.badge-draft {
-  background: orange;
-  color: white;
-}
-
-.small-btn {
-  padding: 6px 10px;
-  font-size: 13px;
-  margin-top: 10px;
-  display: inline-block;
-}
-/* ------------------------------
-   STORY DETAIL PAGE
------------------------------- */
-
-.story-header {
-  margin-bottom: 25px;
-}
-
-.story-title {
-  font-size: 32px;
-  margin-bottom: 10px;
-  color: var(--black);
-}
-
-.story-description {
-  font-size: 18px;
-  color: #555;
-}
-
-.reader-actions {
-  margin: 20px 0;
-}
-
-.author-panel {
-  margin-top: 30px;
-  padding: 20px;
-  background: var(--gray);
-  border-radius: 10px;
-  border: 1px solid var(--border);
-}
-
-.section-title {
-  font-size: 22px;
-  margin-bottom: 15px;
-  color: var(--black);
-}
-
-.author-buttons {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-.page-list {
-  list-style: none;
-  padding: 0;
-}
-
-.page-item {
-  background: var(--white);
-  padding: 15px;
-  border-radius: 8px;
-  border: 1px solid var(--border);
-  margin-bottom: 12px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.page-actions {
-  display: flex;
-  gap: 8px;
-}
-
-.btn-small {
-  padding: 6px 10px;
-  background: var(--yellow);
-  border-radius: 6px;
-  text-decoration: none;
-  color: var(--black);
-  font-weight: bold;
-  font-size: 13px;
-}
-
-.btn-small:hover {
-  background: var(--yellow-light);
-}
-
-.btn-danger {
-  background: #d9534f;
-  color: white;
-}
-
-.btn-danger:hover {
-  background: #c9302c;
-}
-
-.warning-text {
-  color: red;
-  font-weight: bold;
-}
-/* ------------------------------
+/* -----------------------------------------
    STORY READING PAGE
------------------------------- */
-
-.page-container {
-  padding: 10px;
-}
-
-.page-text {
-  background: var(--white);
-  padding: 20px;
-  border-radius: 10px;
-  border: 1px solid var(--border);
-  margin-bottom: 25px;
-  font-size: 20px;
-  line-height: 1.6;
-}
-
-.choices-section {
-  margin-bottom: 25px;
-}
-
-.choices-title {
-  font-size: 22px;
-  margin-bottom: 15px;
-  color: var(--black);
-}
-
-.choice-list {
-  list-style: none;
-  padding: 0;
-}
-
-.choice-item {
-  margin-bottom: 12px;
-}
+----------------------------------------- */
 
 .choice-button {
   display: block;
-  background: var(--yellow);
-  padding: 12px 16px;
-  border-radius: 8px;
+  background: linear-gradient(90deg, var(--yellow), var(--yellow-light));
+  padding: 14px 18px;
+  border-radius: 10px;
   text-decoration: none;
   color: var(--black);
   font-weight: bold;
-  font-size: 16px;
-  transition: background 0.2s ease;
+  font-size: 17px;
+  transition: var(--transition);
 }
 
 .choice-button:hover {
+  transform: translateY(-4px);
   background: var(--yellow-light);
+  box-shadow: var(--shadow-strong);
 }
 
-.disabled-choice {
-  background: #ddd;
-  padding: 12px 16px;
-  border-radius: 8px;
-  color: #777;
-}
-
-.autosave-text {
-  color: green;
-  font-style: italic;
-  margin-bottom: 20px;
-}
-
-.restart-section {
-  margin-top: 20px;
-}
-/* ------------------------------
-   PAGE EDITOR
------------------------------- */
-
-.form-card {
-  background: var(--white);
-  padding: 20px;
-  border-radius: 10px;
-  border: 1px solid var(--border);
-  margin-bottom: 25px;
-}
-
-.form-label {
-  font-weight: bold;
-  margin-top: 15px;
-  display: block;
-}
-
-.form-input {
-  margin-top: 5px;
-  margin-bottom: 15px;
-}
-
-.checkbox-label {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin: 10px 0 20px 0;
-  font-weight: bold;
-}
-
-.divider {
-  margin: 30px 0;
-  border: none;
-  border-top: 1px solid var(--border);
-}
-
-.choice-list-editor {
-  list-style: none;
-  padding: 0;
-  margin-bottom: 20px;
-}
-
-.choice-editor-item {
-  background: var(--gray);
-  padding: 12px 15px;
-  border-radius: 8px;
-  border: 1px solid var(--border);
-  margin-bottom: 10px;
-  display: flex;
-  justify-content: space-between;
-}
-
-.choice-editor-item.empty {
-  color: #777;
-  font-style: italic;
-}
-
-.choice-text {
-  font-weight: bold;
-}
-
-.choice-arrow {
-  color: var(--yellow);
-  font-weight: bold;
-}
-/* ------------------------------
-   CREATE STORY PAGE
------------------------------- */
-
-.page-title {
-  font-size: 28px;
-  margin-bottom: 20px;
-  color: var(--black);
-}
-
-.form-card {
-  background: var(--white);
-  padding: 25px;
-  border-radius: 10px;
-  border: 1px solid var(--border);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-}
-
-.form-label {
-  font-weight: bold;
-  margin-top: 15px;
-  display: block;
-}
-
-.form-input {
-  margin-top: 5px;
-  margin-bottom: 15px;
-}
-/* ------------------------------
-   EDIT STORY PAGE
------------------------------- */
-
-.form-card select {
-  background: var(--white);
-  cursor: pointer;
-}
-/* ------------------------------
-   CREATE PAGE
------------------------------- */
-
-.checkbox-label input {
-  transform: scale(1.2);
-}
-/* ------------------------------
-   CREATE CHOICE PAGE
------------------------------- */
-
-.form-card select {
-  background: var(--white);
-  cursor: pointer;
-}
-/* ------------------------------
-   MY STORIES PAGE
------------------------------- */
-
-.top-actions {
-  margin-bottom: 20px;
-}
-
-.story-status {
-  margin: 10px 0;
-  font-size: 14px;
-}
-
-.badge-published {
-  background: #4CAF50;
-  color: white;
-  padding: 4px 8px;
-  border-radius: 6px;
-  font-size: 12px;
-}
-
-.badge-draft {
-  background: orange;
-  color: white;
-  padding: 4px 8px;
-  border-radius: 6px;
-  font-size: 12px;
-}
-/* ------------------------------
+/* -----------------------------------------
    ENDING PAGE
------------------------------- */
-
-.ending-container {
-  text-align: center;
-  padding: 20px;
-}
+----------------------------------------- */
 
 .ending-title {
-  font-size: 40px;
+  font-size: 44px;
   color: var(--yellow);
-  margin-bottom: 20px;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  margin-bottom: 25px;
+  text-shadow: 0 4px 8px rgba(0,0,0,0.25);
+  animation: fadeIn 0.8s ease;
 }
 
 .ending-card {
   background: var(--white);
-  padding: 25px;
-  border-radius: 12px;
+  padding: 35px;
+  border-radius: 14px;
   border: 1px solid var(--border);
-  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-  margin-bottom: 25px;
-}
-
-.ending-text {
-  font-size: 20px;
-  line-height: 1.6;
-  margin-bottom: 15px;
-}
-
-.ending-label {
-  font-size: 18px;
-  color: var(--black);
-  font-weight: bold;
-}
-
-.ending-actions {
-  display: flex;
-  justify-content: center;
-  gap: 15px;
-  margin-top: 20px;
+  box-shadow: var(--shadow);
+  margin-bottom: 30px;
+  animation: fadeScale 0.6s ease;
 }

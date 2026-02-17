@@ -5,7 +5,7 @@ from database import db
 choices_bp = Blueprint("choices", __name__, url_prefix="/choices")
 
 
-# POST /choices/<page_id>
+# POST a choice
 @choices_bp.post("/<int:page_id>")
 def create_choice(page_id):
     page = Page.query.get_or_404(page_id)
